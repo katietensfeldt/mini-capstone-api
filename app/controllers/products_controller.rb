@@ -16,5 +16,10 @@ class ProductsController < ApplicationController
     render json: product.as_json
   end
 
+  def hiking_boots
+    product = Product.find_by(name: "Women's Hiking Boots")
+    render json: product.as_json
+  end
+
   #The process of adding routes for each thing is so inconvenient! if we had a much larger shop, it would be nearly impossible!
 end
