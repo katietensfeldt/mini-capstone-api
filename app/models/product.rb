@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
 
   belongs_to :supplier
+  has_many :images
 
   validates :name, presence: true, uniqueness: true
   validates :price, :inventory, numericality: {greater_than: 0}
@@ -18,6 +19,14 @@ class Product < ApplicationRecord
 
   def total
     price + tax
+  end
+
+  def image_url
+    urls = []
+    images.each do |image|
+      urls << image.url
+    end
+    urls
   end
 
 end
