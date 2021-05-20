@@ -18,28 +18,33 @@ class ProductsController < ApplicationController
     end
 
     render json: products
+   
   end
 
   def create
-    product = Product.new(
-      name: params[:name],
-      price: params[:price],
-      description: params[:description],
-      inventory: params[:inventory],
-      supplier_id: params[:supplier_id]
-    )
-    if product.save
-      image = Image.new(
-        url: params[:url],
-        product_id: product.id
+    if current_user
+      product = Product.new(
+        name: params[:name],
+        price: params[:price],
+        description: params[:description],
+        inventory: params[:inventory],
+        supplier_id: params[:supplier_id]
       )
-      if image.save
-        render json: product
+      if product.save
+        image = Image.new(
+          url: params[:url],
+          product_id: product.id
+        )
+        if image.save
+          render json: product
+        else
+          render json: {errors: image.errors.full_messages}, status: 	:unprocessable_entity
+        end
       else
-        render json: {errors: image.errors.full_messages}, status: 	:unprocessable_entity
+        render json: {errors: product.errors.full_messages}, status: 	:unprocessable_entity
       end
     else
-      render json: {errors: product.errors.full_messages}, status: 	:unprocessable_entity
+      render json: [], status: :unauthorized
     end
   end
 
