@@ -3,6 +3,7 @@ class Product < ApplicationRecord
   belongs_to :supplier
   has_many :images
   has_many :orders
+  has_many :category_products
 
   validates :name, presence: true, uniqueness: true
   validates :price, numericality: {greater_than: 0}
