@@ -5,28 +5,27 @@ class ProductsController < ApplicationController
     products = Product.all
 
     if params[:category]
-      category = Category.find_by("name iLIKE?", "%#{params[:category]}%")
+      category = Category.find_by("name iLIKE ?", params[:category])
       products = category.products
     end
 
-    # if params[:search_term]
-    #   products = products.where("name iLIKE ?", "%#{params[:search_term]}%")
-    # end
-    # if params[:sort] == "price"
-    #   if params[:sort_order] == "desc"
-    #     products = products.order(price: :desc)
-    #   else
-    #     products = products.order(:price)
-    #   end
-    # else
-    #   products = products.order(:id)
-    # end
-    # if params[:discount] == "true"
-    #   products = products.where("price < 10")
+    # if params[:search]
+    #   products = products.where("name LIKE ?", "%#{params[:search]}%")
     # end
 
-    render json: products
-   
+    # if params[:discount]
+    #   products = products.where("price < ?", 10)
+    # end
+
+    # if params[:sort] == "price" && params[:sort_order] == "asc"
+    #   products = products.order(price: :asc)
+    # elsif params[:sort] == "price" && params[:sort_order] == "desc"
+    #   products = products.order(price: :desc)
+    # else
+    #   products = products.order(id: :asc)
+    # end
+
+    render json: products.order(:id)
   end
 
   def create
